@@ -1,0 +1,26 @@
+#!/bin/sh
+
+export SHARED_BASE="/data"
+
+if [ "x$1" = "xpkg" ]; then
+        set -e
+
+        go install github.com/goreleaser/nfpm/v2/cmd/nfpm@latest
+
+        nfpm package --config "${SHARED_BASE}/nfpm.yaml" --target "${SHARED_BASE}/pkg" --packager deb
+
+        chown ${USER_UID}:${USER_UID} "${SHARED_BASE}/pkg/"*.deb
+
+        exit 0
+fi
+
+CONFDIR=${CONFDIR:-$(pwd)/.vpngen}
+
+docker run --rm \
+        -v $(readlink -f $SSH_AUTH_SOCK):/ssh-agent \
+        -e SSH_AUTH_SOCK=/ssh-agent \
+        -e USER_UID=$(id -u) \
+        -v "${CONFDIR}":/etc/keydesk \
+        -v ${PWD}:${SHARED_BASE} \
+        golang:1.19 "${SHARED_BASE}/build" pkg
+
