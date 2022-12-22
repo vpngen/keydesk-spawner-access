@@ -4,6 +4,7 @@ platform: "linux"
 version: 0.0.1
 section: "default"
 priority: "extra"
+release: 1
 
 provides:
 - vgkeydesk-conf
