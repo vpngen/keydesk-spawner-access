@@ -4,7 +4,7 @@ platform: "linux"
 version: 0.0.2
 section: "default"
 priority: "extra"
-release: 1
+release: 2
 
 provides:
 - vgkeydesk-conf
@@ -35,6 +35,8 @@ contents:
     group: root
 overrides:
   deb:
+    conflicts:
+    - vgkeydesk (>= 1.0.0)
     scripts:
       preinstall: /data/src/preinstall.sh
       postremove: /data/src/postremove.sh
