@@ -1,13 +1,13 @@
 name: "vgkeydesk-spawner-access"
 arch: "amd64"
 platform: "linux"
-version: 0.0.2
+version: 1.0.1
 section: "default"
 priority: "extra"
-release: 2
+release: 1
 
 provides:
-- vgkeydesk-conf
+- vgkeydesk-spawner-access
 
 maintainer: "Ingmund Ollson <ingmund@proton.me>"
 description: VPNGen keydesk spawner access grants
@@ -35,11 +35,14 @@ contents:
     group: root
 overrides:
   deb:
-    conflicts:
-    - vgkeydesk (>= 1.0.0)
     scripts:
       preinstall: /data/src/preinstall.sh
       postremove: /data/src/postremove.sh
 deb:
- compression: xz
+  compression: xz
+  breaks:
+  - vgkeydesk-all (<< 1.0.0)
+  - vgkeydesk (<< 1.0.0)
+  - vgkeydesk-spawner-access (<< 1.0.0)
+  - vgkeydesk-stats-access (<< 1.0.0)
 
