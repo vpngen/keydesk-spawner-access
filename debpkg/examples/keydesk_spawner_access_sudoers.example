@@ -1,0 +1,1 @@
+_serega_          ALL=(ALL) NOPASSWD: /opt/vgkeydesk/create_brigade.sh,/opt/vgkeydesk/destroy_brigade.sh,/opt/vgkeydesk/replace_brigadier.sh

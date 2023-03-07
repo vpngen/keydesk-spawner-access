@@ -1,0 +1,1 @@
+command="/opt/vgkeydesk/ssh_spawner_command.sh ${SSH_ORIGINAL_COMMAND}",no-port-forwarding,no-X11-forwarding,no-agent-forwarding,no-pty ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBKiNrvFERQPcvvSMC8RuHcRtrH9tnkUO1ltMmC0zjcPxJ+XJzajVk1t/YpGQ7UfuxAy/WtHxn21DDJvrYl9l1lk= phil@office
