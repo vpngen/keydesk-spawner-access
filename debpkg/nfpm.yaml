@@ -1,10 +1,10 @@
 name: "vgkeydesk-spawner-access"
-arch: "amd64"
+arch: "all"
 platform: "linux"
-version: 1.0.1
+version: ${PACKAGE_VERSION}
 section: "default"
-priority: "extra"
-release: 1
+priority: "optional"
+release: ${PACKAGE_RELEASE}
 
 provides:
 - vgkeydesk-spawner-access
