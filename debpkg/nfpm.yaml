@@ -21,7 +21,7 @@ contents:
     mode: 0700
     owner: _serega_
     group: _serega_
-- src: /etc/keydesk/keydesk_spawner_access_authorized_keys
+- src: authorized_keys
   dst: /home/_serega_/.ssh/authorized_keys
   file_info:
     mode: 0400
