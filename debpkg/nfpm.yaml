@@ -1,13 +1,13 @@
 name: "vgkeydesk-spawner-access"
-arch: "amd64"
+arch: "all"
 platform: "linux"
-version: 0.0.1
+version: ${PACKAGE_VERSION}
 section: "default"
-priority: "extra"
-release: 1
+priority: "optional"
+release: ${PACKAGE_RELEASE}
 
 provides:
-- vgkeydesk-conf
+- vgkeydesk-spawner-access
 
 maintainer: "Ingmund Ollson <ingmund@proton.me>"
 description: VPNGen keydesk spawner access grants
@@ -21,13 +21,13 @@ contents:
     mode: 0700
     owner: _serega_
     group: _serega_
-- src: /etc/keydesk/authorized_keys
+- src: authorized_keys
   dst: /home/_serega_/.ssh/authorized_keys
   file_info:
     mode: 0400
     owner: _serega_
     group: _serega_
-- src: /etc/keydesk/_serega_
+- src: /etc/__vpngen__/keydesk_spawner_access_sudoers
   dst: /etc/sudoers.d/_serega_
   file_info:
     mode: 0400
@@ -39,5 +39,10 @@ overrides:
       preinstall: /data/src/preinstall.sh
       postremove: /data/src/postremove.sh
 deb:
- compression: xz
+  compression: xz
+  breaks:
+  - vgkeydesk-all (<< 1.0.0)
+  - vgkeydesk (<< 1.0.0)
+  - vgkeydesk-spawner-access (<< 1.0.0)
+  - vgkeydesk-stats-access (<< 1.0.0)
 
