@@ -39,7 +39,7 @@ constract_version () {
           PACKAGE_VERSION="${l_tag}-${BRANCH}"
         fi
 
-        if [ -n "${VERMETADATA}" -a "${VERMETADATA}" != "-" ]; then
+        if [ -n "${VERMETADATA}" ] && [ "${VERMETADATA}" != "-" ]; then
           export PACKAGE_VERSION="${PACKAGE_VERSION}+${VERMETADATA}"
         else 
           export PACKAGE_VERSION="${PACKAGE_VERSION}"
@@ -68,24 +68,22 @@ constract_version () {
 
 }
 
-if [ "x$1" = "xpkg" ]; then
+if [ "$1" = "pkg" ]; then
         set -e
-        export USER_UID=${USER_UID}
-        export BRANCH=${BRANCH}
-        export VERMETADATA=${VERMETADATA}
+        export USER_UID="${USER_UID}"
+        export BRANCH="${BRANCH}"
+        export VERMETADATA="${VERMETADATA}"
+        export GIT_USER="${GIT_USER}"
+        export GIT_PASSWORD="${GIT_PASSWORD}"
 
         if [ -z "${BRANCH}" ]; then
                 echo "No branch specified"
                 exit 1
         fi
 
-        ssh-keyscan -t rsa github.com >> /etc/ssh/ssh_known_hosts
-        ssh-keyscan -t ecdsa github.com >> /etc/ssh/ssh_known_hosts
-        ssh-keyscan -t ed25519 github.com >> /etc/ssh/ssh_known_hosts
+        git config --global credential.helper "!f() { echo \"username=${GIT_USER}\"; echo \"password=${GIT_PASSWORD}\"; }; f"
 
-        git config --global url."ssh://git@github.com/".insteadOf "https://github.com/"
-
-        git clone  -b "${BRANCH}" ssh://git@github.com/vpngen/keydesk-spawner-access
+        git clone  -b "${BRANCH}" https://github.com/vpngen/keydesk-spawner-access
         
         constract_version "keydesk-spawner-access" 
 
@@ -98,7 +96,7 @@ if [ "x$1" = "xpkg" ]; then
 
         nfpm package --config "${SHARED_BASE}/nfpm.yaml" --target "${SHARED_BASE}/pkg" --packager deb
 
-        chown ${USER_UID}:${USER_UID} "${SHARED_BASE}/pkg/"*.deb
+        chown "${USER_UID}":"${USER_UID}" "${SHARED_BASE}/pkg/"*.deb
 
         exit 0
 fi
@@ -113,13 +111,16 @@ if [ -z "${VERMETADATA}" ]; then
         VERMETADATA=${VERMETADATA%%.*}
 fi
 
+GIT_USER=${GIT_USER:-git}
+GIT_PASSWORD=${GIT_PASSWORD:-"$(cat ~/.github_token)"}
+
 docker run --rm \
-        -v $(readlink -f $SSH_AUTH_SOCK):/ssh-agent \
-        -e SSH_AUTH_SOCK=/ssh-agent \
-        -e USER_UID=$(id -u) \
-        -e BRANCH=${BRANCH} \
+        -e USER_UID="$(id -u)" \
+        -e BRANCH="${BRANCH}" \
         -e VERMETADATA="${VERMETADATA}" \
+        -e GIT_USER="${GIT_USER}" \
+        -e GIT_PASSWORD="${GIT_PASSWORD}" \
         -v "${CONFDIR}":/etc/__vpngen__ \
-        -v ${PWD}:${SHARED_BASE} \
+        -v "${PWD}":"${SHARED_BASE}" \
         golang:1.19 "${SHARED_BASE}/build" pkg
 
