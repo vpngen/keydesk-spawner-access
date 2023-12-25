@@ -122,5 +122,5 @@ docker run --rm \
         -e GIT_PASSWORD="${GIT_PASSWORD}" \
         -v "${CONFDIR}":/etc/__vpngen__ \
         -v "${PWD}":"${SHARED_BASE}" \
-        golang:1.19 "${SHARED_BASE}/build" pkg
+        golang:1.21 "${SHARED_BASE}/build" pkg
 
