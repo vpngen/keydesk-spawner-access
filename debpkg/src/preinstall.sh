@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# Copyright 2022-2024 IEDN gGmbH
+#
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 cleanInstall() {
 	printf "\033[32m Pre Install of an clean install\033[0m\n"
 	# Step 3 (clean install), enable the service in the proper way for this platform
